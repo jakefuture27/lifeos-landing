@@ -2,43 +2,80 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  DollarSign,
+  HeartPulse,
+  Briefcase,
+  Home,
+  Landmark,
+  Plane,
+  Sparkles,
+} from "lucide-react";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
-  const [statusText, setStatusText] = useState("INITIALIZING CORE KERNEL");
+  const [activeStep, setActiveStep] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
-  useEffect(() => {
-    const statusPhrases = [
-      "INITIALIZING CORE KERNEL",
-      "PREPARING CONTEXT GRAPH",
-      "ENCRYPTING TELEMETRY",
-      "LIFEOS UNLOCKED",
-    ];
+  const domainSteps = [
+    {
+      label: "FINANCE AI: CASHFLOW RADAR",
+      icon: DollarSign,
+      color: "text-emerald-400 border-emerald-500/30",
+    },
+    {
+      label: "HEALTH & FITNESS AI: BIOMETRIC RECOVERY",
+      icon: HeartPulse,
+      color: "text-rose-400 border-rose-500/30",
+    },
+    {
+      label: "CAREER AI: SALARY & OPPORTUNITY ADVISOR",
+      icon: Briefcase,
+      color: "text-purple-400 border-purple-500/30",
+    },
+    {
+      label: "HOME AI: ASSET & WARRANTY GUARD",
+      icon: Home,
+      color: "text-amber-400 border-amber-500/30",
+    },
+    {
+      label: "GOVERNMENT AI: COMPLIANCE & TAX PILOT",
+      icon: Landmark,
+      color: "text-[#7C9EFF] border-[#4F7FFF]/30",
+    },
+    {
+      label: "TRAVEL AI: FLIGHT & PASSPORT LOGISTICS",
+      icon: Plane,
+      color: "text-cyan-400 border-cyan-500/30",
+    },
+  ];
 
+  useEffect(() => {
     let currentProgress = 0;
     const interval = setInterval(() => {
       currentProgress += 1;
       if (currentProgress >= 100) {
         currentProgress = 100;
         clearInterval(interval);
-        setStatusText("LIFEOS UNLOCKED");
         setTimeout(() => {
           setIsFinished(true);
           setTimeout(onComplete, 850);
         }, 500);
       } else {
-        const phraseIdx = Math.min(
-          Math.floor((currentProgress / 100) * statusPhrases.length),
-          statusPhrases.length - 1
+        const stepIdx = Math.min(
+          Math.floor((currentProgress / 100) * domainSteps.length),
+          domainSteps.length - 1
         );
-        setStatusText(statusPhrases[phraseIdx]);
+        setActiveStep(stepIdx);
       }
       setProgress(currentProgress);
-    }, 25);
+    }, 28); // ~2.8s total cinematic domain tour
 
     return () => clearInterval(interval);
   }, [onComplete]);
+
+  const currentDomain = domainSteps[activeStep];
+  const CurrentIcon = currentDomain.icon;
 
   return (
     <AnimatePresence>
@@ -49,16 +86,16 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[100] bg-[#040509] flex flex-col justify-between p-8 sm:p-14 select-none overflow-hidden"
         >
-          {/* Top Bar: Clean Monochrome, No Green Dot */}
+          {/* Top Bar */}
           <div className="flex items-center justify-between text-xs font-mono text-slate-400 relative z-10">
             <span className="font-bold text-white tracking-tight text-sm">LifeOS</span>
-            <span className="text-slate-500 font-mono">[ 01 / 04 ]</span>
+            <span className="text-slate-500 font-mono">[ {activeStep + 1} / {domainSteps.length} ]</span>
           </div>
 
-          {/* Center Eye-Worthy 3D Gyroscope & Counter */}
+          {/* Center 3D Gyroscope & Morphing Domain Icon */}
           <div className="max-w-4xl mx-auto w-full space-y-10 text-center my-auto relative z-10">
             
-            {/* 3D Astrolabe / Gyroscope Sphere */}
+            {/* 3D Gyroscope Sphere with Morphing Icon */}
             <div className="relative w-48 h-48 mx-auto flex items-center justify-center">
               
               {/* Ring 1: Outer Primary Tilt */}
@@ -91,20 +128,23 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 className="absolute inset-7 rounded-full border border-white/10"
               />
 
-              {/* Ring 4: Inner Core Hoop */}
-              <motion.div
-                animate={{
-                  rotateX: [-45, 315],
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-11 rounded-full border border-[#00F0FF]/30"
-              />
+              {/* Center Morphing Domain Icon */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeStep}
+                  initial={{ scale: 0.5, opacity: 0, rotate: -20 }}
+                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                  exit={{ scale: 0.5, opacity: 0, rotate: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className={`w-14 h-14 rounded-2xl bg-[#0D1017] border flex items-center justify-center shadow-xl ${currentDomain.color}`}
+                >
+                  <CurrentIcon className="w-7 h-7" />
+                </motion.div>
+              </AnimatePresence>
 
-              {/* Center Specular Core Node */}
-              <div className="w-3 h-3 rounded-full bg-white shadow-[0_0_15px_#FFFFFF]" />
             </div>
 
-            {/* Counter & Status Display */}
+            {/* Counter & Domain Label Display */}
             <div className="space-y-3">
               <motion.div
                 key={progress}
@@ -116,16 +156,20 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                 <span className="text-xl sm:text-3xl text-slate-500 font-light ml-1">%</span>
               </motion.div>
 
-              {/* Status Phrase */}
-              <div className="h-5 flex items-center justify-center">
-                <motion.div
-                  key={statusText}
-                  initial={{ opacity: 0, y: 3 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-xs font-mono tracking-[0.2em] text-slate-400 uppercase"
-                >
-                  {statusText}
-                </motion.div>
+              {/* Active Domain Label */}
+              <div className="h-6 flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentDomain.label}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-xs font-mono tracking-[0.2em] text-slate-300 uppercase"
+                  >
+                    {currentDomain.label}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
 
