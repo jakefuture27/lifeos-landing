@@ -1,96 +1,73 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+
+const phases = [
+  {
+    label: "Now",
+    title: "Finance intelligence",
+    description: "Cash flow, bills, and subscriptions — managed before they become problems.",
+  },
+  {
+    label: "Next",
+    title: "Health, career & home",
+    description: "The same approach, applied to the rest of your life.",
+  },
+  {
+    label: "Vision",
+    title: "The complete OS for life",
+    description: "One system that understands everything and connects the dots for you.",
+  },
+];
 
 export default function Roadmap() {
-  const stages = [
-    {
-      year: "2026",
-      title: "Finance AI Core",
-      status: "Active",
-      description: "Cash flow forecasting, bill prediction & subscription intelligence.",
-      bullets: [
-        "Cash flow forecasting",
-        "Bill prediction",
-        "Subscription intelligence",
-      ],
-    },
-    {
-      year: "Future",
-      title: "Health, Career & Home AI",
-      status: "In Development",
-      description: "Biometric integration, career equity & home asset management.",
-      bullets: [
-        "Health AI & Wearable Sync",
-        "Career AI & Opportunity Scouter",
-        "Home AI & Maintenance Guard",
-        "Government AI & Form Automation",
-        "Travel AI & Visa Reminders",
-      ],
-    },
-    {
-      year: "Horizon",
-      title: "LifeOS",
-      status: "Vision Architecture",
-      description: "The complete AI Operating System.",
-      bullets: [
-        "Unified cross-domain intelligence graph",
-        "Proactive zero-latency life protection",
-        "100% private local enclave execution",
-      ],
-    },
-  ];
-
   return (
-    <section id="roadmap" className="py-24 relative bg-[#06070C] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            The Evolution of LifeOS.
-          </h2>
+    <section id="roadmap" className="py-24 bg-[#06070B]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-16"
+        >
+          Where we're headed.
+        </motion.h2>
 
-          <p className="text-slate-400 text-base">
-            From specialized financial intelligence to the complete AI Operating System.
-          </p>
-        </div>
+        <div className="relative">
+          {/* Vertical line */}
+          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/10" />
 
-        {/* Timeline Stack */}
-        <div className="max-w-3xl mx-auto space-y-6">
-          {stages.map((stage, idx) => (
-            <motion.div
-              key={stage.title}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="p-6 rounded-2xl bg-[#0C0F17] border border-white/10 flex flex-col md:flex-row md:items-start justify-between gap-6"
-            >
-              <div className="space-y-2 md:max-w-xs">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-[#7C9EFF]">{stage.year}</span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5">
-                    {stage.status}
-                  </span>
+          <div className="space-y-12">
+            {phases.map((phase, idx) => (
+              <motion.div
+                key={phase.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                className="relative pl-8"
+              >
+                {/* Dot */}
+                <div className="absolute left-0 top-[6px] w-[15px] h-[15px] rounded-full border-2 border-white/20 bg-[#06070B]">
+                  {idx === 0 && (
+                    <div className="absolute inset-[3px] rounded-full bg-white" />
+                  )}
                 </div>
-                <h3 className="text-xl font-bold text-white">{stage.title}</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">{stage.description}</p>
-              </div>
 
-              <div className="space-y-2 text-xs text-slate-300 border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-6">
-                {stage.bullets.map((b, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#4F7FFF] shrink-0" />
-                    <span>{b}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">
+                  {phase.label}
+                </span>
+                <h3 className="text-lg font-semibold text-white mt-1">
+                  {phase.title}
+                </h3>
+                <p className="text-sm text-slate-400 mt-1 max-w-md">
+                  {phase.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   );
