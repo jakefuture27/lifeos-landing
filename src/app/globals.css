@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #06070B;
+    --bg-card: #0D1017;
+    --bg-card-hover: #121620;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Solid Matte Card Styling (Linear & Vercel Aesthetic) */
+.card-matte {
+  background-color: #0D1017;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-matte:hover {
+  background-color: #121620;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+/* Solid Matte Button Styling */
+.btn-matte-primary {
+  background-color: #FFFFFF;
+  color: #000000;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-matte-primary:hover {
+  background-color: #E2E8F0;
+  transform: translateY(-1px);
+}
+
+.btn-matte-primary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.btn-matte-secondary {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #F8FAFC;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-matte-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.btn-matte-secondary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #06070B;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
