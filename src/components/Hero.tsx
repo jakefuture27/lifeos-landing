@@ -1,13 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { Check, ChevronRight, Copy } from "lucide-react";
+
+const CONTRACT_ADDRESS = "2fZ8n8VCimt5rgRuLbkqdeGMet9Be9PwbzkNDxaJLife";
 
 interface HeroProps {
   onOpenWaitlist: () => void;
 }
 
 export default function Hero({ onOpenWaitlist }: HeroProps) {
+  const [copied, setCopied] = useState(false);
+
+  const copyContractAddress = async () => {
+    await navigator.clipboard.writeText(CONTRACT_ADDRESS);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <section className="relative pt-40 pb-32 md:pt-52 md:pb-44 overflow-hidden bg-[#06070B]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -30,7 +41,7 @@ export default function Hero({ onOpenWaitlist }: HeroProps) {
             life — so you can stop catching up and start getting ahead.
           </p>
 
-          <div className="flex items-center justify-center gap-3 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
             <button
               onClick={onOpenWaitlist}
               className="btn-matte-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm"
@@ -45,6 +56,28 @@ export default function Hero({ onOpenWaitlist }: HeroProps) {
             >
               See how it works
             </a>
+          </div>
+
+          <div className="flex justify-center pt-2">
+            <div className="flex max-w-full items-center gap-3 rounded-full border border-white/10 bg-white/5 py-2 pl-4 pr-2">
+              <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                CA
+              </span>
+              <code className="min-w-0 truncate font-mono text-xs text-slate-300 sm:text-sm">
+                {CONTRACT_ADDRESS}
+              </code>
+              <button
+                type="button"
+                onClick={copyContractAddress}
+                className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                aria-label={copied ? "Contract address copied" : "Copy contract address"}
+              >
+                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              </button>
+              <span className="sr-only" aria-live="polite">
+                {copied ? "Contract address copied to clipboard" : ""}
+              </span>
+            </div>
           </div>
         </motion.div>
 
